@@ -29,4 +29,31 @@ exports.getUserByID = async(req: Request, res: Response) => {
     res.json(user);
 }
 
+exports.getUserPosts = async(req: Request, res: Response) => {
+    const userId = parseInt(req.params.id);
+    const posts = await prisma.post.findMany({
+            where: {
+                authorId: userId
+            },
+            include: {
+                author: true
+            }
+        });
+    res.json(posts); 
+}
 
+exports.createPost = async(req: Request, res: Response) => {
+    const {title, content, published, email} = req.body;
+
+    const post = await prisma.post.create({
+        data: {
+            title: title,
+            published: published,
+            content: content,
+            author: {
+                connect: { email: email }
+            }
+        }
+    })
+    res.send(post);
+}

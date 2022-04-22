@@ -13,6 +13,7 @@ app.use(express.json());
 //Routes
 require('./routes/user.route')(app);
 
+
 // //Get Requests
 
 // //Get all users
